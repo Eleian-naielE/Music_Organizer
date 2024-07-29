@@ -1,7 +1,10 @@
 import tinytag as tnytg
 import os
+import shutil as su
 
 cdir = "/storage/emulated/0/Playlist"
+
+other_dir = cdir+'/Others'
 
 items = os.listdir(cdir)
 
@@ -18,6 +21,14 @@ for file in Files :
     else : 
         artist_Dict[artist_info] = [file,]
 
+folderNames = artist_Dict.Keys()
 
-#fix indentation erorr
-#for folderCheck in artist_Dict:
+#fix indentation erorr (?)
+# this loop should move files from playlist to folder named as artists.
+for folderCheck in folderNames:
+  if len(artist_Dict[folderCheck]) >= 3 :
+    os.mkdir(cdir+'/'+folderCheck)
+    su.
+  else:
+    os.mkdir(other_dir+'/'+folderCheck)
+    
