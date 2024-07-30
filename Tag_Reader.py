@@ -1,36 +1,39 @@
-import tinytag as tnytg
+from tinytag import TinyTag as tnytg
 import os
 import shutil as su
 
 cdir = "/storage/emulated/0/Playlist"
+other_dir = os.path.join(cdir, 'Others')
 
-other_dir = cdir+'/Others'
+
+if not os.path.exists(other_dir):
+    os.mkdir(other_dir)
 
 items = os.listdir(cdir)
+Files = [f for f in items if os.path.isfile(os.path.join(cdir, f))]
 
-Files = [f for f in items if os.path.isfile(cdir+'/'+f)]
+artist_Dict = {}
 
-artist_Dict={}
-
-for file in Files :
-    tag=tnytg.get(file)
-    artist_info=tag.artist
+for file in Files:
+    file_path = os.path.join(cdir, file)
+    tag = tnytg.get(file_path)
+    artist_info = tag.artist
     
-    if artist_info in artist_Dict :
-        artist_Dict.get(artist_info).append(file)
-    else : 
-        artist_Dict[artist_info] = [file,]
+    if artist_info in artist_Dict:
+        artist_Dict[artist_info].append(file_path)
+    else:
+        artist_Dict[artist_info] = [file_path]
 
 folderNames = artist_Dict.keys()
 
-#fix indentation erorr (?)
-# this loop should move files from playlist to folder named as artists if the artist has more than 3 tracks
+
 for folderCheck in folderNames:
-    if len(artist_Dict[folderCheck]) >= 3 :
-      artist_dir=os.mkdir(cdir+'/'+folderCheck)
-      for src_mvd in artist_Dict[folderCheck]:
-         su.move(src_mvd, dst_dir)
+    if len(artist_Dict[folderCheck]) >= 3:
+        artist_dir = os.path.join(cdir, folderCheck)
+        if not os.path.exists(artist_dir):
+            os.mkdir(artist_dir)
+        for src_mvd in artist_Dict[folderCheck]:
+            su.move(src_mvd, artist_dir)
     else:
-      #other_subdir=os.mkdir(other_dir)
-      for src_mvd in artist_Dict[folderCheck]:
-         su.move(src_mvd, other_dir)     
+        for src_mvd in artist_Dict[folderCheck]:
+            su.move(src_mvd, other_dir)
