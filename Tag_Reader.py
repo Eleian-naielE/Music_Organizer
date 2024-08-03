@@ -2,20 +2,20 @@ from tinytag import TinyTag as tnytg
 import os
 import shutil as su
 
-cdir = "/storage/emulated/0/Playlist"
-other_dir = os.path.join(cdir, 'Others')
+playlist = "/storage/emulated/0/Playlist"
+playlist_Others = os.path.join(playlist, 'Others')
 
 
-if not os.path.exists(other_dir):
-    os.mkdir(other_dir)
+if not os.path.exists(playlist_Others):
+    os.mkdir(playlist_Others)
 
-items = os.listdir(cdir)
-Files = [f for f in items if os.path.isfile(os.path.join(cdir, f))]
+items = os.listdir(playlist)
+Files = [f for f in items if os.path.isfile(os.path.join(playlist, f))]
 
 artist_Dict = {}
 
 for file in Files:
-    file_path = os.path.join(cdir, file)
+    file_path = os.path.join(playlist, file)
     tag = tnytg.get(file_path)
     artist_info = tag.artist
     
@@ -24,16 +24,16 @@ for file in Files:
     else:
         artist_Dict[artist_info] = [file_path]
 
-folderNames = artist_Dict.keys()
+folderName_Candidates = artist_Dict.keys()
 
 
-for folderCheck in folderNames:
-    if len(artist_Dict[folderCheck]) >= 3:
-        artist_dir = os.path.join(cdir, folderCheck)
+for folderNameCheck in folderName_Candidates:
+    if len(artist_Dict[folderNameCheck]) >= 3:
+        artist_dir = os.path.join(playlist, folderNameCheck)
         if not os.path.exists(artist_dir):
             os.mkdir(artist_dir)
-        for src_mvd in artist_Dict[folderCheck]:
+        for src_mvd in artist_Dict[folderNameCheck]:
             su.move(src_mvd, artist_dir)
     else:
-        for src_mvd in artist_Dict[folderCheck]:
-            su.move(src_mvd, other_dir)
+        for src_mvd in artist_Dict[folderNameCheck]:
+            su.move(src_mvd, playlist_Others)

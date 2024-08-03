@@ -1,2 +1,5 @@
 # Music_Organizer
-Python music file auto organizer.
+A python script to organize my music files on Android.
+
+
+Requires python that has access to android directory.
