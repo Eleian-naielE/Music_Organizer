@@ -3,10 +3,12 @@ import os
 import shutil as su
 from collections import defaultdict
 
-playlist = "/storage/emulated/0/Playlist"
-playlist_Others = os.path.join(playlist, 'Others')
 
-os.makedirs(playlist_Others, exist_ok=True)
+
+playlist = "/storage/emulated/0/Playlist"       # main music dir
+playlist_Others = os.path.join(playlist, 'Others')      # others dir
+
+os.makedirs(playlist_Others, exist_ok=True) # if there's no others dir, this makes one(might not need it?)
 
 items = os.listdir(playlist)
 Files = [f for f in items if os.path.isfile(os.path.join(playlist, f))]
@@ -28,3 +30,10 @@ for artist, file_paths in artist_Dict.items():
     else:
         for src_mvd in file_paths:
             su.move(src_mvd, playlist_Others)
+
+
+def move_audio() :
+    return
+
+# New Feature : filter others music by genre 
+# Time to define new functions?
