@@ -29,5 +29,6 @@ for artist, file_paths in artist_Dict.items():
     else:
         for other_audio in file_paths : 
             genre_info = tnytg.get(other_audio).genre
-            os.makedirs(genre_info, exist_ok=True)
-            su.move(other_audio, os.path.join(playlist_Others, genre_info))
+            genre_dir=os.path.join(playlist_Others, genre_info)
+            os.makedirs(genre_dir, exist_ok=True)
+            su.move(other_audio, genre_dir)
