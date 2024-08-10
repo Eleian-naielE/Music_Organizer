@@ -4,7 +4,6 @@ import shutil as su
 from collections import defaultdict
 
 
-
 playlist = "/storage/emulated/0/Playlist"       # main music dir
 playlist_Others = os.path.join(playlist, 'Others')      # others dir
 
@@ -14,11 +13,11 @@ items = os.listdir(playlist)
 Files = [f for f in items if os.path.isfile(os.path.join(playlist, f))]
 
 artist_Dict = defaultdict(list)
+others_genre_Dict = defaultdict(list)
 
 for file in Files:
     file_path = os.path.join(playlist, file)
-    tag = tnytg.get(file_path)
-    artist_info = tag.artist or "Unknown Artist"
+    artist_info = tnytg.get(file_path).artist or "Unknown Artist"
     artist_Dict[artist_info].append(file_path)
 
 for artist, file_paths in artist_Dict.items():
@@ -28,14 +27,7 @@ for artist, file_paths in artist_Dict.items():
         for src_mvd in file_paths:
             su.move(src_mvd, artist_dir)
     else:
-        for src_mvd in file_paths:
-            su.move(src_mvd, playlist_Others)
-
-
-def move_audio() :
-    
-    
-    return
-
-# New Feature : filter others music by genre 
-# Time to define new functions?
+        for other_audio in file_paths : 
+            genre_info = tnytg.get(other_audio).genre
+            os.makedirs(genre_info, exist_ok=True)
+            su.move(other_audio, os.path.join(playlist_Others, genre_info))
